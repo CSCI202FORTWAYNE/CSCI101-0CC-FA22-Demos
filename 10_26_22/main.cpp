@@ -6,17 +6,14 @@
 
 using namespace std;
 
-int main()
-{
-    int mar;
-    double memorySize;
-    char unit;
-    long bytes;
 
-    cout << "Enter the memory size: ";
-    cin >> memorySize;
+double getDoubleGreaterThan0(string prompt)
+{
+    double x;
+    cout << prompt;
+    cin >> x;
     cout << endl;
-    while (!cin || memorySize <= 0)
+    while (!cin || x <= 0)
     {
         if (!cin)
         {
@@ -26,13 +23,18 @@ int main()
         }
         else
         {
-            cout << "The memory size should be greater than 0." << endl;
+            cout << "The number should be greater than 0." << endl;
         }
-        cout << "Enter the memory size: ";
-        cin >> memorySize;
+        cout << prompt;
+        cin >> x;
         cout << endl;
     }
+    return x;
+}
 
+char getMemUnits()
+{
+    char unit;
     cout << "Enter the units (B = bytes, K = KB, M = MB, G = GB, T = TB): ";
     cin >> unit;
     cout << endl;
@@ -46,28 +48,46 @@ int main()
         unit = toupper(unit);
     }
 
+    return unit;
+}
+
+long getbytes(double memSize, char unit)
+{
+    long bytes;
+    
     if(unit == 'B')
     {
-        bytes = ceil(memorySize);
+        bytes = ceil(memSize);
     }
     else if (unit == 'K')
     {
-        bytes = ceil(memorySize * pow(2,10));
+        bytes = ceil(memSize * pow(2,10));
     }
     else if (unit == 'M')
     {
-        bytes = ceil(memorySize *pow(2,20));
+        bytes = ceil(memSize *pow(2,20));
     } 
     else if (unit == 'G')
     {
-        bytes = ceil(memorySize * pow(2,30));
+        bytes = ceil(memSize * pow(2,30));
     }
     else if (unit == 'T')
     {
-        bytes = ceil(memorySize * pow(2,40));
+        bytes = ceil(memSize * pow(2,40));
     }
+    return bytes;
+}
+
+
+int main()
+{
+    int mar;
+    double memorySize = getDoubleGreaterThan0("Enter the memory size: ");
+    char unit = getMemUnits();
+    long bytes = getbytes(memorySize, unit);
     cout << "The minimum MAR size for " << memorySize <<  " " << unit << "B (" << bytes << " bytes)";
     cout << " of memory is " << ceil(log2(bytes)) << " bits." << endl; 
+    bytes = getbytes(16, 'G');
 
     return 0;
 }
