@@ -11,6 +11,10 @@ int main()
     ifstream infile;
     infile.open("grades.txt");
 
+    ofstream outfile;
+    outfile.open("out.txt");
+    //outfile << setprecision(2) << showpoint << fixed;
+
     int count = 0;
     int studentNum;
     double score;
@@ -50,26 +54,26 @@ int main()
         {
             isFound = true;
         }
-        cout << studentNum;
+        outfile << studentNum;
         if (score >= 90)
         {
-            cout << " has earned an A." << endl;
+            outfile << " has earned an A." << endl;
         }
         else if (score >= 80)
         {
-            cout << " has earned a B." << endl;
+            outfile << " has earned a B." << endl;
         }
         else if (score >= 70)
         {
-            cout << " has earned a C." << endl;
+            outfile << " has earned a C." << endl;
         }
         else if (score >= 60)
         {
-            cout << " has earned a D." << endl;
+            outfile << " has earned a D." << endl;
         }
         else
         {
-            cout << " has earned a F." << endl;
+            outfile << " has earned a F." << endl;
         }
 
         count++; // count = count + 1;
