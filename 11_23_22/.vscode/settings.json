@@ -4,6 +4,11 @@
             "cwd": "/home/avenable11/CSCI101-FA22-W/11_23_22",
             "binaryPath": "/home/avenable11/CSCI101-FA22-W/11_23_22/a.out",
             "binaryArgs": []
+        },
+        {
+            "cwd": "/mnt/c/Users/FORTI/OneDrive/Documents/GitHub/CSCI101-0CC-FA22-Demos/11_23_22",
+            "binaryPath": "/mnt/c/Users/FORTI/OneDrive/Documents/GitHub/CSCI101-0CC-FA22-Demos/11_23_22/a.out",
+            "binaryArgs": []
         }
     ],
     "files.associations": {

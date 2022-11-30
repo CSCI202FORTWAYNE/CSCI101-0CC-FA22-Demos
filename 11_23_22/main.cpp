@@ -69,6 +69,9 @@ colorType inputColor();
 void setupPlayers(playerListType &);
 void printColorMenu();
 void printPlayerOnBoard(playerListType&, int, string);
+int drawCard(deckType&);
+void startGame(playerListType&, deckType&, colorType[], int);
+void takeTurn(playerType&, deckType&, colorType[], int, bool&);
 
 int main()
 {
@@ -79,6 +82,8 @@ int main()
     playerListType pl;
     setupPlayers(pl);
     printBoard(board, BOARD_SIZE, pl);
+    startGame(pl, theDeck, board, BOARD_SIZE);
+    cout << "Game Over! Thanks for playing!" << endl;
 
     return 0;
 }
@@ -259,5 +264,92 @@ void printPlayerOnBoard(playerListType& pl, int boardSpace, string spaceColor)
         {
             cout << " ";
         }
+    }
+}
+
+int drawCard(deckType& d)
+{
+    static ifstream in("gameplay.txt");
+
+    if(d.numUsed == DECK_SIZE)
+    {
+        cout << "All the cards in the deck have been used. Resetting deck." << endl;
+        d.numUsed = 0;
+        for(int i = 0; i < DECK_SIZE; i++)
+        {
+            d.used[i] = false;
+        }
+    }
+    if(!in.is_open())
+    {
+        in.open("gameplay.txt");
+    }
+    bool valid = false;
+    int card;
+    while(!valid && !in.eof())
+    {
+        in >> card;
+        if(d.used[card])
+        {
+            continue;
+        }
+        else
+        {
+            valid = true;
+            d.used[card] = true;
+            d.numUsed++;
+        }
+    }
+
+    if(in.eof())
+    {
+        in.close();
+    }
+    return card;
+
+}
+
+void startGame(playerListType& pl, deckType& d, colorType b[], int boardSize)
+{
+    bool winner = false;
+    while(!winner)
+    {
+        for(int i = 0; i < pl.numPlayers; i++)
+        {
+            takeTurn(pl.playerList[i], d, b, boardSize, winner);
+        }
+        printBoard(b, boardSize, pl);
+    }
+}
+
+void takeTurn(playerType& p, deckType& d, colorType b[], int boardSize, bool& win)
+{
+    cout << p.name << "'s turn: " << endl;
+    cout << "Press any key to draw a card.";
+    cin.ignore();
+    cin.get();
+    cardType playerCard = d.deck[drawCard(d)];
+    cout << p.name << " drew a " << printCard(playerCard) << endl;
+    int num = 1;
+    if(playerCard.isDouble)
+    {
+        num = 2;
+    }
+    for(int i = 0; i < num; i++)
+    {
+        for(int j = p.position + 1; j < boardSize; j++)
+        {
+            if(playerCard.color == b[j])
+            {
+                p.position = j;
+                break;
+            }
+        }
+    }
+
+    if(p.position == boardSize - 1)
+    {
+        cout << p.name << " has reached the end!" << endl;
+        win = true;
     }
 }
